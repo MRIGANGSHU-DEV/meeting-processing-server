@@ -31,8 +31,8 @@ async function startJob(recordingUrl, jobType) {
           model: 'nova-3',          // More accurate model
           smart_format: true,       // Punctuation, formatting
           language: 'en',           // Optional, but can help
-          punctuate: true,          // Add punctuation if smart_format doesn't
-          tier: 'enhanced'          // Enables better quality if you’re on a paid plan
+          punctuate: true          // Add punctuation if smart_format doesn't
+          
         }
       }
     );
