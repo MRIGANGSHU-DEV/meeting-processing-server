@@ -1,6 +1,3 @@
-// This is where we handle all job logic (e.g., storing job info, simulating background work).
-// Right now it uses in-memory storage (jobStore), but you can later hook this into a database or Redis if needed.
-
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
 require('dotenv').config();
@@ -29,16 +26,22 @@ async function startJob(recordingUrl, jobType) {
         headers: {
           Authorization: `Token ${process.env.DEEPGRAM_API_KEY}`,
           'Content-Type': 'application/json'
+        },
+        params: {
+          model: 'nova-3',          // More accurate model
+          smart_format: true,       // Punctuation, formatting
+          language: 'en',           // Optional, but can help
+          punctuate: true,          // Add punctuation if smart_format doesn't
+          tier: 'enhanced'          // Enables better quality if you’re on a paid plan
         }
       }
     );
 
     const transcript = response.data?.results?.channels[0]?.alternatives[0]?.transcript;
 
-    // Simulate PDF generation and response
     jobStore[jobId].status = 'done';
-    jobStore[jobId].transcript = transcript;
-    jobStore[jobId].downloadUrl = `https://dummy.link/${jobId}.pdf`; // Replace with actual
+    jobStore[jobId].transcript = transcript || '[No transcript returned]';
+    jobStore[jobId].downloadUrl = `https://dummy.link/${jobId}.pdf`;
 
   } catch (err) {
     console.error('Deepgram failed:', err?.response?.data || err.message);
@@ -53,5 +56,3 @@ function getJobStatus(jobId) {
 }
 
 module.exports = { startJob, getJobStatus };
-
-
