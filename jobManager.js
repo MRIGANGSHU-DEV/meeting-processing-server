@@ -20,7 +20,7 @@ function startJob(recordingUrl, jobType) {
   setTimeout(() => {
     jobStore[jobId].status = 'done';
     jobStore[jobId].downloadUrl = `https://dummy.link/result-${jobId}.pdf`;
-  }, 5 * 60 * 1000); // Simulate 5 mins
+  }, 15 * 1000); // Simulate 5 mins
 
   return jobId;
 }
